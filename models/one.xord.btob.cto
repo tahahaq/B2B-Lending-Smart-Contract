@@ -1,31 +1,30 @@
 namespace one.xord.btob
 
-
-// Get the money back into lender amount
+// Get the money back into lender customer balance
+// Update balance amount in borrowingRequest
+//
 // Deposit share into company account
 
-transaction PaybackMoney {
-    o String lendingId
+transaction paybackMoney {
+    o String borrowingRequestId
     o String amount
-    o String companyAmount
     o String borrowerId
     o String lenderId
+    o String companyId
 }
 
-// Update the asset when money is payed back
-asset Subscribe identified by id {
+participant Company identified by id {
     o String id
-    o String ledgerId
-    o Double subscribeAmount
-    o Integer status
-    o DateTime creationDate
-    o DateTime refundedDate
+    o Double balance
+    o String[] amount
+    o String[] borrowingRequest
 }
+
 
 // Will execute once borrowing is rejected
 // Set the status of borrowing as rejected
 
-transaction BorrowingRejected  {
+transaction rejectBorrowing  {
     o String lendingId
     o String id
     o String borrowerId
@@ -36,32 +35,31 @@ transaction BorrowingRejected  {
 // Move money into borrower account
 // Set the status of borrowing as approved
 
-transaction BorrowingApproved  {
-    o String lendingId
-    o String id
+transaction approveBorrowing {
+    o String lendingContractId
     o String borrowerId
     o String lenderId
+    o String borrowingRequest
     o String campaignName
     o String description
     o DateTime startDate
     o DateTime endDate
     o Double amount
-    --> Customer lender
-    --> Customer borrower
 }
 
 
-asset BorrowingRequest identified by lendingId {
+asset BorrowingRequest identified by id {
     o String id
-    o String lendingId
+    o String lendingContractId
     o Double amount
     o DateTime creationDate
     o String notes
     o Integer status
     o Double repaidAmount
     o Double balanceAmount
-    --> Customer borrower
+    o String borrowerId
 }
+
 
 asset LendingContract identified by id {
     o String id
@@ -69,7 +67,7 @@ asset LendingContract identified by id {
     o String creationDate
     o String notes
     o String lenderId
-    o Integer status
+    o Integer lendingCount
     o String lenderRemarks
     o Integer approvalSetting
     o Integer lendingSetting
