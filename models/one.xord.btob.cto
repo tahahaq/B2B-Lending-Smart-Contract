@@ -1,0 +1,127 @@
+namespace one.xord.btob
+
+
+// Get the money back into lender amount
+// Deposit share into company account
+
+transaction PaybackMoney {
+    o String lendingId
+    o String amount
+    o String companyAmount
+    o String borrowerId
+    o String lenderId
+}
+
+// Update the asset when money is payed back
+asset Subscribe identified by id {
+    o String id
+    o String ledgerId
+    o Double subscribeAmount
+    o Integer status
+    o DateTime creationDate
+    o DateTime refundedDate
+}
+
+// Will execute once borrowing is rejected
+// Set the status of borrowing as rejected
+
+transaction BorrowingRejected  {
+    o String lendingId
+    o String id
+    o String borrowerId
+    o String lenderId
+}
+
+// Will execute once borrowing is approved
+// Move money into borrower account
+// Set the status of borrowing as approved
+
+transaction BorrowingApproved  {
+    o String lendingId
+    o String id
+    o String borrowerId
+    o String lenderId
+    o String campaignName
+    o String description
+    o DateTime startDate
+    o DateTime endDate
+    o Double amount
+    --> Customer lender
+    --> Customer borrower
+}
+
+
+asset BorrowingRequest identified by lendingId {
+    o String id
+    o String lendingId
+    o Double amount
+    o DateTime creationDate
+    o String notes
+    o Integer status
+    o Double repaidAmount
+    o Double balanceAmount
+    --> Customer borrower
+}
+
+asset LendingContract identified by id {
+    o String id
+    o Double amount
+    o String creationDate
+    o String notes
+    o String lenderId
+    o Integer status
+    o String lenderRemarks
+    o Integer approvalSetting
+    o Integer lendingSetting
+}
+
+transaction DepositLendingMoney  {
+    o String lendingContractId
+    o Double amount
+}
+
+
+transaction DepositBalance  {
+    o String customerId
+    o Double amount
+}
+
+// create customer
+participant Customer identified by id {
+    o String id
+    o String fullName
+    o String firstName
+    o String lastName
+    o DateTime dob
+    o String idNumber
+    o String designation
+    o String gender
+    o String contact
+    o String password
+    o String username
+    o String companyName
+    o String businessRegistrationNumber
+    o String companyPhone
+    o String unitNumber
+    o String buildingNumber
+    o String streetName
+    o String estate
+    o String postalCode
+    o String country
+    o String emailAddress
+    o String emailForCorrespondence
+    o String promoCode
+    o String referralNumber
+    o Boolean smsService
+    o Integer status
+    o DateTime creationDate
+    o Integer customerId
+    o Integer token
+    o String faxNumber
+    o String publicPaymentAddress
+    o Double balance
+    o Double owedMoney
+    o Double loanedMoney
+}
+
+
